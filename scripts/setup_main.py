@@ -5,8 +5,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
-import seaborn as sns
-# matplotlib inline
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
 from sklearn.preprocessing import LabelEncoder
@@ -15,7 +13,6 @@ import warnings
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 plt.style.use('seaborn-whitegrid')
-sns.set_context("poster")
 
 
 # dataset = pd.read_csv("./da")
@@ -117,17 +114,6 @@ def train(save_model=False):
     y_train = pd.read_csv("../output/dataset/y_train.csv")
     x_test = pd.read_csv("../output/dataset/x_test.csv")
     y_test = pd.read_csv("../output/dataset/y_test.csv")
-    eval_set = [(x_test, y_test)]
-    # kfoldcv = StratifiedKFold(n_splits=5)
-    # xgb_model = XGBClassifier(n_estimators=250)
-    # results = cross_val_score(xgb_model, x_train, y_train, cv=kfoldcv)
-    # print("XGBClassifier: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
-    # for i in [50, 100, 200, 400, 800, 1600]:
-    #     xgb_model = XGBClassifier(n_estimators=300, learning_rate=0.05).fit(x_train, y_train)
-    #     results = xgb_model.predict(x_test)
-    #     predictions = [round(value) for value in results]
-    #     accuracy = accuracy_score(y_test, predictions)
-    #     print("Accuracy: %.2f%% --- %.2f N_estimators" % (accuracy * 100.0, i))
 
     if save_model:
         xgb_model = XGBClassifier(n_estimators=400, learning_rate=0.05).fit(x_train, y_train)
