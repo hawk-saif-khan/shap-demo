@@ -45,7 +45,7 @@ def mains(explainer, feature, sub_data, x_test, encoding, mapping, ROOT_DIR):
 
     def subsubfocus(text, x, encoding):
         temp_df, c, subset_select = '', '', ''
-        if text in ["all", "hours per week", "age"]:
+        if text in ["all", "hours_per_week", "age"]:
             if "all" in text:
                 c = all_details
                 temp_df = x
@@ -63,7 +63,7 @@ def mains(explainer, feature, sub_data, x_test, encoding, mapping, ROOT_DIR):
                 else:
                     ranges = subset_select.split(' > ')
                     temp_df = x[x["age"] < int(ranges[-1])]
-            elif text == "hours per week":
+            elif text == "hours_per_week":
                 subset_select = st.sidebar.selectbox("On which range of \"hours per week\" do you want to subset?", (
                     "hours < 20", "20 < hours < 35", "35 < hours < 50", "50 < hours < 60", "60 < hours < 80",
                     "hours > 80"))
@@ -92,6 +92,7 @@ def mains(explainer, feature, sub_data, x_test, encoding, mapping, ROOT_DIR):
     shap_explainer = shap.TreeExplainer(xgb_model)
     df_sub, mapping_text, subset_text = subsubfocus(sub_data, x_test, encoding)
     shap_values = shap_explainer(df_sub)
+    print(feature)
     if explainer == "Sensitivity":
         st_shap(shap.plots.scatter(shap_values[:, feature], color=shap_values), height=420)
         st.header("Details about the plot:")
@@ -139,12 +140,12 @@ select_explainer = st.sidebar.radio("Choose your desired explainer.", ("Sensitiv
 feature_select = ''
 if select_explainer == "Sensitivity":
     feature_select = st.sidebar.selectbox("Select desired feature to analyze",
-                                          ("sex", "age", "hours per week", "education", "relationship", "occupation",
+                                          ("sex", "age", "hours_per_week", "education", "relationship", "occupation",
                                            "workclass", "marital_status",
                                            "race", "native_country"))
 select_subset_dataset = st.sidebar.selectbox(
     "How would you like to focus on the data?",
-    ("all", "sex", "age", "hours per week", "education", "relationship", "occupation", "workclass", "marital_status",
+    ("all", "sex", "age", "hours_per_week", "education", "relationship", "occupation", "workclass", "marital_status",
      "race", "native_country")
 )
 with st.spinner('Wait for it...'):
